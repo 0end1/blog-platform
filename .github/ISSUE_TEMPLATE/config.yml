@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 安全漏洞报告（Security Vulnerability）
+    url: https://github.com/<owner>/blog-platform/security/advisories/new
+    about: 请勿公开提交安全问题，请通过私有漏洞报告渠道反馈。
+  - name: 讨论区（Discussions）
+    url: https://github.com/<owner>/blog-platform/discussions
+    about: 一般性问题、使用交流请到 Discussions。

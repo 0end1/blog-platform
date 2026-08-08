@@ -1,0 +1,36 @@
+{
+  "name": "@blog/admin",
+  "version": "1.0.0",
+  "private": true,
+  "description": "博客平台管理后台 - React 18 + Vite + Ant Design 5 + Zustand",
+  "license": "MIT",
+  "author": "Blog Platform Contributors",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/0end1/blog-platform.git"
+  },
+  "scripts": {
+    "dev": "vite --port 3002",
+    "build": "tsc && vite build",
+    "preview": "vite preview -p 3002",
+    "lint": "eslint \"src/**/*.{ts,tsx}\" --fix",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@ant-design/icons": "^5.3.7",
+    "@blog/shared": "*",
+    "antd": "^5.18.0",
+    "classnames": "^2.5.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.24.0",
+    "zustand": "^4.5.4"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "typescript": "^5.4.0",
+    "vite": "^5.3.3"
+  }
+}
