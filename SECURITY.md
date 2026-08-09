@@ -14,7 +14,7 @@
 请通过以下方式私下反馈：
 
 - GitHub 私信（Private vulnerability reporting）：在本仓库点击 **Security → Report a vulnerability**。
-- 或发送邮件至安全联系人：`security@example.com`（请替换为实际维护者邮箱）。
+- 或发送邮件至安全联系人：`w1378379002@icloud.com`。
 
 请在报告中尽量包含：
 
