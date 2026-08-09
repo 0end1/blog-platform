@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
-import { Card, Form, Input, Button, Alert, Typography } from 'antd';
-import { authApi } from '@/lib/api';
+import { Card, Form, Input, Button, Alert, Typography, Divider } from 'antd';
+import { GithubOutlined, GoogleOutlined } from '@ant-design/icons';
+import { authApi, API_BASE } from '@/lib/api';
 import { useAuthStore } from '@/store/auth';
 
 const { Title } = Typography;
@@ -57,6 +58,20 @@ export function Login() {
           </Form.Item>
           <Button type="primary" htmlType="submit" block loading={loading}>
             登录
+          </Button>
+          <Divider plain style={{ color: '#999', fontSize: 12 }}>
+            或使用第三方账号
+          </Divider>
+          <Button
+            block
+            icon={<GithubOutlined />}
+            href={`${API_BASE}/auth/oauth/github`}
+            style={{ marginBottom: 8 }}
+          >
+            使用 GitHub 登录
+          </Button>
+          <Button block icon={<GoogleOutlined />} href={`${API_BASE}/auth/oauth/google`}>
+            使用 Google 登录
           </Button>
         </Form>
       </Card>
