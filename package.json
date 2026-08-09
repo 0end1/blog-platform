@@ -44,7 +44,7 @@
   "devDependencies": {
     "browserslist": "^4.28.6",
     "caniuse-lite": "^1.0.30001806",
-    "eslint": "^9.9.0",
+    "eslint": "^10.8.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "postcss": "^8.4.39",
