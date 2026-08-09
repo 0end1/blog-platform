@@ -4,7 +4,6 @@ import {
   PrimaryGeneratedColumn,
   Index,
   ManyToMany,
-  JoinTable,
   CreateDateColumn,
 } from 'typeorm';
 import { ArticleEntity } from '../article/article.entity';
@@ -25,10 +24,5 @@ export class TagEntity {
   createdAt: Date;
 
   @ManyToMany(() => ArticleEntity, (article) => article.tags)
-  @JoinTable({
-    name: 'article_tags',
-    joinColumn: { name: 'tag_id', referencedColumnName: 'id' },
-    inverseJoinColumn: { name: 'article_id', referencedColumnName: 'id' },
-  })
   articles: ArticleEntity[];
 }

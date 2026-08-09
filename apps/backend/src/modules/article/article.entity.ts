@@ -40,7 +40,7 @@ export class ArticleEntity {
   status: 'draft' | 'published';
 
   @Index('idx_author')
-  @Column()
+  @Column({ nullable: true })
   authorId: string;
 
   @ManyToOne(() => UserEntity, { nullable: true, onDelete: 'SET NULL' })
@@ -54,8 +54,12 @@ export class ArticleEntity {
   @JoinColumn({ name: 'categoryId' })
   category?: CategoryEntity | null;
 
-  @ManyToMany(() => TagEntity, { nullable: true })
-  @JoinTable({ name: 'article_tags' })
+  @ManyToMany(() => TagEntity, (tag) => tag.articles)
+  @JoinTable({
+    name: 'article_tags',
+    joinColumn: { name: 'article_id', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'tag_id', referencedColumnName: 'id' },
+  })
   tags?: TagEntity[];
 
   @Column({ default: 0 })

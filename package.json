@@ -89,6 +89,9 @@
     "rc-tree": "~5.13.1",
     "rc-tree-select": "~5.27.0",
     "rc-upload": "~4.11.0",
-    "rc-util": "^5.44.4"
+    "rc-util": "^5.44.4",
+    "passport-jwt": "^4.0.1",
+    "jsonwebtoken": "^9.0.2",
+    "passport": "^0.7.0"
   }
 }
