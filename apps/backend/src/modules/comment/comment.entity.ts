@@ -1,4 +1,13 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, Index } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  Index,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
+import { UserEntity } from '../user/user.entity';
 
 @Entity('comments')
 export class CommentEntity {
@@ -14,6 +23,10 @@ export class CommentEntity {
 
   @Column()
   authorId: string;
+
+  @ManyToOne(() => UserEntity)
+  @JoinColumn({ name: 'authorId' })
+  author: UserEntity;
 
   @Column({ type: 'text' })
   content: string;
