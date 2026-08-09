@@ -20,6 +20,7 @@
 - [快速开始（Getting Started）](#快速开始getting-started)
 - [常用脚本（Scripts）](#常用脚本scripts)
 - [接口一览（API）](#接口一览api)
+- [文档导航（Docs）](#文档导航docs)
 - [路线图（Roadmap）](#路线图roadmap)
 - [贡献（Contributing）](#贡献contributing)
 - [安全（Security）](#安全security)
@@ -32,6 +33,8 @@
 - ✅ **用户管理**：列表、改角色、启用 / 禁用、删除（仅管理员）；首个注册用户自动成为管理员。
 - ✅ **管理后台**：仪表盘统计、评论审核、权限路由。
 - ✅ **展示端**：SSR 首页（分类侧边栏）、分类 / 标签 / 文章详情页、登录 / 注册。
+- ✅ **第三方登录与绑定**：管理后台支持 GitHub / Google OAuth 登录与账号绑定 / 解绑（需在 `.env` 配置凭据后启用）。
+- ✅ **审计日志**：登录 / 注册 / OAuth / 文章增改删 / 评论审核 / 敏感词增删等关键操作异步写入审计日志，后台可筛选查询。
 - ✅ **统一契约**：`@blog/shared` 提供统一响应规范 `{ code, message, data, timestamp }` 与领域类型，前后端共享。
 
 ## 技术栈（Tech Stack）
@@ -55,9 +58,9 @@ blog-platform/
 │           ├── response.ts # 统一响应 { code,message,data,timestamp } + 错误码
 │           └── entities.ts # User/Article/Category/Tag/Comment 类型
 └── apps/
-    ├── backend/            # NestJS 后端（auth/user/article/category/tag/comment/admin）
+    ├── backend/            # NestJS 后端（auth/user/article/category/tag/comment/admin/audit/oauth/moderation/upload）
     ├── frontend/           # Next.js 14 展示端（SSR 首页 / 文章详情 / 登录注册）
-    └── admin/              # React+Vite+AntD 管理后台（仪表盘 / 文章 / 分类标签 / 用户）
+    └── admin/              # React+Vite+AntD 管理后台（仪表盘 / 文章 / 分类标签 / 用户 / 审计 / 账号绑定）
 ```
 
 ## 环境要求（Prerequisites）
@@ -123,14 +126,26 @@ npm run dev:admin      # 管理后台 :3002
 | GET | /admin/articles | 后台文章列表（admin） |
 | GET | /admin/comments | 评论列表（admin） |
 | PUT | /admin/comments/:id/moderate | 评论审核（admin） |
+| GET | /admin/audit-logs | 审计日志查询（admin，分页 + 动作过滤） |
+| GET | /auth/oauth/:provider | 跳转第三方授权（github / google） |
+| GET | /auth/oauth/:provider/callback | 第三方回调 |
+| POST | /admin/oauth/unbind | 解绑第三方账号（admin） |
+
+## 文档导航（Docs）
+
+更深入的流程与联调说明见 `docs/` 目录：
+
+- [端侧登录流程](./docs/login-flow.md) —— 管理后台登录、展示端登录/注册、GitHub/Google OAuth 登录与绑定。
+- [业务流程](./docs/business-flows.md) —— 文章管理、评论审核、敏感词、审计日志、文件上传。
+- [测试账号](./docs/test-accounts.md) —— 管理员 / 读者测试账号、OAuth 开通方式与安全提醒。
 
 ## 路线图（Roadmap）
 
 - **Sprint 0（已完成）**：工程脚手架、共享契约、六大模块骨架、展示端与管理后台骨架。
 - **Sprint 1（已完成）**：用户系统 / 后台框架 / 分类标签 / 首页列表（见上）。
-- **Sprint 2（规划中）**：文章编辑与发布（富文本 / Markdown）、评论提交与展示、作者中心。
-- **Sprint 3（规划中）**：数据库迁移（TypeORM migration）、全文搜索、部署文档。
-- **Sprint 4（规划中）**：性能优化、监控、国际化。
+- **Sprint 2（已完成）**：文章编辑与发布（Markdown）、评论提交与展示、作者中心。
+- **Sprint 3（已完成）**：数据库迁移（TypeORM migration）、全文搜索、部署文档。
+- **Sprint 4（进行中）**：安全加固 —— 审计日志（S4-04 已完成）、第三方账号登录/绑定（已接入脚手架，待生产凭据）、性能优化、监控、国际化。
 
 详见 [CHANGELOG.md](./CHANGELOG.md)。
 
