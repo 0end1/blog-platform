@@ -28,7 +28,7 @@
 ## 安全基线
 
 - 生产环境**必须**通过环境变量 `JWT_ACCESS_SECRET` / `JWT_REFRESH_SECRET` 设置高强度密钥，
-  切勿使用代码中的 `dev-*-secret` 默认值。
+  切勿使用代码中的 `change-me-*-secret` 默认值（见 [.env.example](./apps/backend/.env.example)）。
 - 数据库连接信息通过 `.env` 提供，且该文件已被 [.gitignore](./.gitignore) 忽略，禁止提交到仓库。
 - 生产部署应关闭 `synchronize`（`DB_SYNC=false`）并使用正式的数据库迁移。
 - 依赖定期更新，建议开启 Dependabot（见 `.github/dependabot.yml`）。
