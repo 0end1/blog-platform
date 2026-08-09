@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { fetchArticle } from '@/lib/api';
+import CommentSection from '@/components/CommentSection';
 
 export default async function ArticlePage({ params }: { params: { slug: string } }) {
   const slug = decodeURIComponent(params.slug);
@@ -50,6 +51,8 @@ export default async function ArticlePage({ params }: { params: { slug: string }
       <div className="prose mt-6 whitespace-pre-wrap leading-7 text-gray-800">
         {article.content}
       </div>
+
+      <CommentSection articleId={article.id} />
     </article>
   );
 }

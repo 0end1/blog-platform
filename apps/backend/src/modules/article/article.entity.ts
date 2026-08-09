@@ -37,7 +37,7 @@ export class ArticleEntity {
 
   @Index('idx_status_published')
   @Column({ default: 'draft' })
-  status: 'draft' | 'published';
+  status: 'draft' | 'scheduled' | 'published';
 
   @Index('idx_author')
   @Column({ nullable: true })
@@ -70,6 +70,9 @@ export class ArticleEntity {
 
   @Column({ type: 'datetime', nullable: true })
   publishedAt: Date;
+
+  @Column({ type: 'datetime', nullable: true })
+  scheduledPublishAt?: Date | null;
 
   @CreateDateColumn()
   createdAt: Date;
