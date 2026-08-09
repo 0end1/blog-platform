@@ -53,12 +53,93 @@ export function fetchArticle(slug: string): Promise<Article> {
   return apiGet<Article>(`/articles/${slug}`, {} as Article);
 }
 
+/** 评论视图（后端返回时附带 author 信息） */
+export interface CommentView {
+  id: string;
+  articleId: string;
+  parentId?: string | null;
+  authorId: string;
+  content: string;
+  status: 'pending' | 'approved' | 'rejected';
+  createdAt: string;
+  author?: { id: string; username: string; avatar?: string };
+}
+
+export function fetchComments(articleId: string): Promise<CommentView[]> {
+  return apiGet<CommentView[]>(`/comments/article/${articleId}`, []);
+}
+
+export async function postComment(input: {
+  articleId: string;
+  authorId: string;
+  content: string;
+  parentId?: string | null;
+}): Promise<CommentView> {
+  const res = await fetch(`${API_BASE}/comments`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(input),
+    cache: 'no-store',
+  });
+  if (!res.ok) throw new Error(`评论发表失败 (${res.status})`);
+  const body = (await res.json()) as ApiResponse<CommentView>;
+  return body.data;
+}
+
 export function fetchCategories(): Promise<Category[]> {
   return apiGet<Category[]>('/categories', []);
 }
 
 export function fetchTags(): Promise<Tag[]> {
   return apiGet<Tag[]>('/tags', []);
+}
+
+/* ------------------------- 搜索（Sprint 3） ------------------------- */
+
+export interface SearchHit extends Article {
+  /** 高亮后的标题（含 <mark> 标签） */
+  highlightedTitle: string;
+  /** 高亮后的内容摘要片段 */
+  snippet: string;
+}
+
+export interface SearchResult {
+  items: SearchHit[];
+  total: number;
+  page: number;
+  pageSize: number;
+}
+
+export function fetchSearch(
+  q: string,
+  params: { page?: number; pageSize?: number } = {},
+): Promise<SearchResult> {
+  const qs = new URLSearchParams();
+  qs.set('q', q);
+  if (params.page) qs.set('page', String(params.page));
+  if (params.pageSize) qs.set('pageSize', String(params.pageSize));
+  return apiGet<SearchResult>(`/search?${qs.toString()}`, {
+    items: [],
+    total: 0,
+    page: params.page ?? 1,
+    pageSize: params.pageSize ?? 10,
+  });
+}
+
+export async function fetchSearchSuggest(q: string): Promise<string[]> {
+  const term = q.trim();
+  if (!term) return [];
+  try {
+    const res = await fetch(
+      `${API_BASE}/search/suggest?q=${encodeURIComponent(term)}`,
+      { cache: 'no-store' },
+    );
+    if (!res.ok) return [];
+    const body = (await res.json()) as ApiResponse<string[]>;
+    return body.data ?? [];
+  } catch {
+    return [];
+  }
 }
 
 /* ------------------------- 客户端认证（browser） ------------------------- */
