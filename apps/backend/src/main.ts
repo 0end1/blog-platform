@@ -1,6 +1,8 @@
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
+import express from 'express';
 import { AppModule } from './app.module';
+import { UPLOAD_DIR } from './modules/upload/upload.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -10,6 +12,9 @@ async function bootstrap() {
 
   // CORS（开发期放开，生产由 Nginx/WAF 控制）
   app.enableCors({ origin: true, credentials: true });
+
+  // 上传静态资源（封面/正文图）可直接访问
+  app.use('/uploads', express.static(UPLOAD_DIR));
 
   // 全局路由前缀
   app.setGlobalPrefix('api/v1');
