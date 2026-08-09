@@ -95,4 +95,14 @@ export class AuthService {
       role: payload.role,
     });
   }
+
+  /** 为已存在的用户实体签发令牌对（供 OAuth 登录复用） */
+  async loginWithUser(user: UserEntity): Promise<TokenPair & { user: Omit<UserEntity, 'password'> }> {
+    const tokens = this.issueTokens({
+      sub: user.id,
+      email: user.email,
+      role: user.role,
+    });
+    return { ...tokens, user: this.toSafeUser(user) };
+  }
 }
