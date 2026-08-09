@@ -5,13 +5,20 @@ import {
   FileTextOutlined,
   AppstoreOutlined,
   UserOutlined,
+  MessageOutlined,
+  LinkOutlined,
   LogoutOutlined,
+  SafetyOutlined,
 } from '@ant-design/icons';
 import { Login } from './pages/login';
 import { Dashboard } from './pages/dashboard';
 import { ArticleList } from './pages/article-list';
 import { CategoryTag } from './pages/category-tag';
 import { UserList } from './pages/user-list';
+import { CommentModeration } from './pages/comment-moderation';
+import { AccountBinding } from './pages/account-binding';
+import { OAuthCallback } from './pages/oauth-callback';
+import { AuditLogs } from './pages/audit-logs';
 import { useAuthStore } from './store/auth';
 
 const { Sider, Header, Content } = Layout;
@@ -33,6 +40,9 @@ function AdminLayout() {
     { key: '/articles', icon: <FileTextOutlined />, label: '文章管理' },
     { key: '/category-tag', icon: <AppstoreOutlined />, label: '分类与标签' },
     { key: '/users', icon: <UserOutlined />, label: '用户管理' },
+    { key: '/comments', icon: <MessageOutlined />, label: '评论审核' },
+    { key: '/audit-logs', icon: <SafetyOutlined />, label: '审计日志' },
+    { key: '/account', icon: <LinkOutlined />, label: '账号绑定' },
   ];
 
   function handleLogout() {
@@ -98,8 +108,12 @@ export default function App() {
           <Route path="/articles" element={<ArticleList />} />
           <Route path="/category-tag" element={<CategoryTag />} />
           <Route path="/users" element={<UserList />} />
+          <Route path="/comments" element={<CommentModeration />} />
+          <Route path="/audit-logs" element={<AuditLogs />} />
+          <Route path="/account" element={<AccountBinding />} />
         </Route>
       </Route>
+      <Route path="/oauth-callback" element={<OAuthCallback />} />
       <Route path="*" element={<Navigate to="/dashboard" replace />} />
     </Routes>
   );

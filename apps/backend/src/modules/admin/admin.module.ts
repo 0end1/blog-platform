@@ -10,6 +10,8 @@ import { ArticleModule } from '../article/article.module';
 import { CategoryModule } from '../category/category.module';
 import { TagModule } from '../tag/tag.module';
 import { CommentModule } from '../comment/comment.module';
+import { ModerationModule } from '../moderation/moderation.module';
+import { AuditModule } from '../audit/audit.module';
 import { AdminService } from './admin.service';
 import { AdminController } from './admin.controller';
 
@@ -21,6 +23,8 @@ import { AdminController } from './admin.controller';
     CategoryModule,
     TagModule,
     CommentModule,
+    ModerationModule,
+    AuditModule,
   ],
   controllers: [AdminController],
   providers: [AdminService],

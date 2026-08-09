@@ -7,6 +7,7 @@ import { AccessJwtAuthGuard } from './guards/access-jwt-auth.guard';
 import { RefreshJwtAuthGuard } from './guards/refresh-jwt-auth.guard';
 import { GetCurrentUser } from './decorators/current-user.decorator';
 import { JwtPayload } from './strategies/access-jwt.strategy';
+import { Audit } from '../../common/decorators/audit.decorator';
 
 /**
  * 认证模块（Sprint 1 实现：邮箱注册/登录/JWT 双令牌/刷新/退出/当前用户）
@@ -20,12 +21,14 @@ export class AuthController {
   ) {}
 
   @Post('register')
+  @Audit('auth.register', 'user')
   register(@Body() dto: RegisterDto) {
     return this.authService.register(dto);
   }
 
   @Post('login')
   @HttpCode(200)
+  @Audit('auth.login', 'user')
   login(@Body() dto: LoginDto) {
     return this.authService.login(dto);
   }
