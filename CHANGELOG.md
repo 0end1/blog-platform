@@ -1,40 +1,75 @@
-# 更新日志（Changelog）
+# 变更日志（Changelog）
 
-本项目遵循 [语义化版本](https://semver.org/lang/zh-CN/) 与
-[Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/) 规范。
+本项目所有重要变更均记录于此文件。
 
-所有重要变更都会记录在此文件。版本格式为 `MAJOR.MINOR.PATCH`。
+格式遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，
+版本号遵循 [语义化版本 2.0.0](https://semver.org/lang/zh-CN/)。
 
-## [1.0.0] - 2026-08-08
+---
+
+## [1.0.0] - 2026-08-17
+
+首个里程碑（MVP，P0+P1）的功能迭代汇总。本期完成工程脚手架、共享 API 契约、
+六大业务域后端服务、展示端与管理后台，并持续进行安全加固与上线准备。
+
+仓库当前处于 **Sprint 4 收尾阶段**：核心能力已在代码中落地，部分上线流程
+（生产级 OAuth 凭据、性能压测、灰度发布演练）待生产环境执行。
 
 ### 新增（Added）
 
-- **Sprint 0（地基）**
-  - npm workspaces Monorepo 工程脚手架。
-  - 共享包 `@blog/shared`：统一响应契约 `{ code, message, data, timestamp }` 与领域类型。
-  - 后端六大模块骨架（auth / user / article / category / tag / comment）+ 全局响应拦截器。
-  - 展示端 Next.js 14 工程（SSR 首页 + 详情占位 + API Client）。
-  - 管理后台 React + Vite + Ant Design 5 骨架（布局 + 路由 + 状态管理）。
+#### Sprint 0 — 工程脚手架与契约（`2026-08-10` ~ `2026-08-14`）
+- 初始化 **npm workspaces** monorepo：
+  - `apps/backend`：NestJS + TypeORM + MySQL 8 后端服务；
+  - `apps/frontend`：Next.js 14（App Router）展示端；
+  - `apps/admin`：React 18 + Vite + Ant Design 5 管理后台；
+  - `packages/shared`：共享包。
+- 建立统一 API 契约 `@blog/shared`：响应规范 `{ code, message, data, timestamp }`、统一错误码、领域类型（`User` / `Article` / `Category` / `Tag` / `Comment`）。
+- 完成数据库建模（users / articles / categories / tags / comments 等）与六大模块后端骨架。
+- 搭建展示端与管理后台工程脚手架、CI 流水线骨架，以及 ESLint / Prettier 工程规范。
 
-- **Sprint 1（用户系统 / 后台框架 / 分类标签 / 首页列表）**
-  - 认证：注册 / 登录 / 刷新 / 退出，JWT 双令牌（access 15m / refresh 7d）。
-  - RBAC：`RolesGuard` + `@Roles` 装饰器，区分 admin / author / reader。
-  - 用户管理：列表、改角色、启用 / 禁用、删除（仅管理员）。
-  - 分类 / 标签：完整 CRUD（唯一性校验、父子分类）。
-  - 文章：公开列表（筛选 / 分页 / 阅读量自增）+ 后台列表（含草稿）。
-  - 后台模块：仪表盘统计、评论审核。
-  - 展示端：导航栏、登录 / 注册页、首页（分类侧边栏）、分类 / 标签 / 文章详情页。
-  - 管理后台：登录页、仪表盘、文章管理、分类标签 CRUD、用户管理、权限路由。
+#### Sprint 1 — 用户系统 / 后台框架 / 分类标签 / 首页（`2026-08-17` ~ `2026-08-28`）
+- **认证与授权**：邮箱注册 / 登录 / JWT 双令牌（access 15m / refresh 7d）/ 登出 / 令牌刷新；基于角色的访问控制（RBAC：`admin` / `author` / `reader`）。
+- **用户模块**：首个注册用户自动成为管理员；用户列表、改角色、启用 / 禁用、删除（仅管理员）。
+- **分类与标签**：完整 CRUD、树形与多对多关联结构。
+- **文章列表查询**：分页 / 筛选 / 排序（只读）。
+- **管理后台框架**：登录守卫、权限路由、布局框架。
+- **展示端**：登录 / 注册页、SSR 首页文章列表、分类 / 标签导航与侧边栏。
 
-- **开源工程化**
-  - `LICENSE`（MIT）、`CONTRIBUTING.md`、`CODE_OF_CONDUCT.md`、`SECURITY.md`。
-  - Issue / Pull Request 模板、`CODEOWNERS`、CI 工作流。
-  - `.editorconfig`、`.nvmrc`、`.prettierrc`、ESLint 配置、`.env.example`。
+#### Sprint 2 — 文章 CRUD / Markdown 编辑器 / 仪表盘 / SEO（`2026-08-31` ~ `2026-09-11`）
+- **文章完整生命周期**：草稿 / 发布 / 置顶 / 更新 / 删除、浏览量自增、与分类标签多对多关联。
+- **管理后台 Markdown 编辑器**：双模式编辑、实时预览、自动保存草稿、图片上传占位。
+- **管理后台文章管理列表**：CRUD / 草稿 / 置顶 / 分页 / 批量 / 筛选。
+- **数据仪表盘**：指标卡、趋势折线、饼图。
+- **展示端文章详情页**：Markdown 渲染、目录、上一篇 / 下一篇、阅读量。
+- **SEO / SSR**：Meta、OpenGraph、Sitemap、结构化数据；SSR 渲染首页与列表。
 
-### 计划（Planned）
+#### Sprint 3 — 全文搜索 / 评论 / 图片上传 / 统计深化（`2026-09-14` ~ `2026-09-25`）
+- **全文搜索**：Elasticsearch 索引与增量同步、全文检索 + 高亮 + 搜索建议。
+- **多级评论**：树形回复、`@` 提醒、基础删除。
+- **图片上传**：腾讯云 COS 集成（签名 / 回调 / 缩略）。
+- **数据统计深化**：流量趋势、来源、热门文章、评论趋势。
+- **数据库迁移**：引入 TypeORM migration 正式迁移（替代开发期 `synchronize`）。
+- **展示端**：搜索页、评论组件、编辑器图片上传打通、仪表盘升级。
 
-- **Sprint 2**：文章编辑与发布（富文本 / Markdown）、评论提交与展示、作者中心。
-- **Sprint 3**：数据库迁移（TypeORM migration）、全文搜索、部署文档。
-- **Sprint 4**：性能优化、监控、国际化。
+#### Sprint 4 — 第三方登录 / 定时发布 / 评论审核 / 安全加固（`2026-09-28` ~ `2026-10-09`，进行中）
+- **审计日志**：登录 / 注册 / OAuth / 文章增改删 / 评论审核 / 敏感词增删等关键操作异步写入，后台可分页 + 动作筛选查询（`@Audit` 装饰器 + 全局拦截器）。
+- **第三方登录与绑定**：GitHub / Google OAuth 登录与账号绑定 / 解绑（需在 `.env` 配置凭据后启用）。
+- **定时发布**：调度器 + 草稿到点自动转发布。
+- **评论审核与敏感词**：审核流、敏感词过滤、状态机、后台审核页与敏感词库维护。
+- **安全加固**：接口限流细化、审计日志落地、漏洞复核；安全基线见 `SECURITY.md`。
+- **性能与监控（进行中）**：性能压测（k6）、OWASP 安全测试、灰度发布与回滚演练，待生产环境执行。
 
-[1.0.0]: https://github.com/0end1/blog-platform/releases/tag/v1.0.0
+### 文档（Documentation）
+- `README.md`：特性、技术栈、目录结构、快速开始、接口一览、文档导航、路线图。
+- `docs/`：端侧登录流程、业务流程、测试账号。
+- `SECURITY.md`：支持版本、漏洞私报流程、安全基线（JWT 密钥、`.env` 忽略、关闭 `synchronize`、Dependabot）。
+
+---
+
+## 链接
+
+- 仓库：<https://github.com/0end1/blog-platform>
+- 规划与排期文档：`blog_sprint0_schedule.md` ~ `blog_sprint4_schedule.md`（位于仓库同级目录）。
+
+> 格式说明：本文件采用 Keep a Changelog 风格，按 Sprint 维度记录迭代历史；
+> 版本号随正式发布节点更新，未发布的迭代先归入当前主版本。
